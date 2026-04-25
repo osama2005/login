@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مستشفى يافا المركزي</title>
+    <link rel="stylesheet" href="Login.css">
+</head>
+<body>
+    <div class="animated-bg"></div>
+    <div class="login-page">
+        <div class="login-card">
+            <div class="brand">
+                <h1>مستشفى يافا المركزي</h1>
+                <p>تسجيل الدخول إلى لوحة التحكم</p>
+            </div>
+            <form class="login-form">
+                <label for="username">اسم المستخدم</label>
+                <input id="username" type="text" placeholder="ادخل اسم المستخدم" required>
+
+                <label for="password">كلمة المرور</label>
+                <input id="password" type="password" placeholder="ادخل كلمة المرور" required>
+
+                <button type="submit">دخول</button>
+                <p class="helper">لا تملك حساباً؟ <a href="Create an account/Create an account.html">سجل الآن</a></p>
+                <p class="helper">
+                  <button type="button" id="admin-access" class="admin-btn">دخول الأدمن</button>
+                </p>
+
+                <div class="guest-access">
+                    <label for="guest-name">دخول كضيف</label>
+                    <input id="guest-name" type="text" placeholder="ادخل اسم الضيف" required>
+                    <button type="button" id="guest-login">دخول كضيف</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="Login.js"></script>
+</body>
+</html>
