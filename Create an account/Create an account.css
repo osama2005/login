@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg-start: #e6f0fb;
+    --bg-end: #f7fbff;
+    --card: rgba(255, 255, 255, 0.95);
+    --text: #1f2d3d;
+    --muted: #5f718a;
+    --accent: #2f80ed;
+    --border: rgba(47, 128, 237, 0.18);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+    color: var(--text);
+}
+
+body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.animated-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(circle at 20% 20%, rgba(47, 128, 237, 0.23), transparent 25%),
+                radial-gradient(circle at 80% 15%, rgba(127, 82, 255, 0.18), transparent 18%),
+                radial-gradient(circle at 50% 72%, rgba(47, 184, 134, 0.16), transparent 22%);
+    animation: drift 18s ease-in-out infinite;
+}
+
+.login-page {
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    z-index: 1;
+}
+
+.login-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 32px 28px;
+    box-shadow: 0 22px 60px rgba(21, 72, 133, 0.12);
+}
+
+.brand h1 {
+    margin: 0 0 8px;
+    font-size: 1.8rem;
+    letter-spacing: 0.02em;
+}
+
+.brand p {
+    margin: 0;
+    color: var(--muted);
+}
+
+.login-form {
+    margin-top: 28px;
+    display: grid;
+    gap: 18px;
+}
+
+.login-form label {
+    font-size: 0.95rem;
+    color: var(--muted);
+}
+
+.login-form input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgba(99, 129, 170, 0.3);
+    border-radius: 16px;
+    background: #f9fbff;
+    color: var(--text);
+    font-size: 0.98rem;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(47, 128, 237, 0.08);
+}
+
+.login-form button {
+    width: 100%;
+    padding: 14px 18px;
+    border: none;
+    border-radius: 16px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.login-form button:hover {
+    background: #1f66d6;
+    transform: translateY(-1px);
+}
+
+.helper {
+    margin: 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.helper a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.helper a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 420px) {
+    .login-card {
+        padding: 24px 20px;
+    }
+}
+
+@keyframes drift {
+    0%, 100% {
+        transform: translateX(0) translateY(0) scale(1);
+    }
+    50% {
+        transform: translateX(8%) translateY(-6%) scale(1.02);
+    }
+}

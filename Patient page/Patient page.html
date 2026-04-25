@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="Patient page.css">
+<title>عيادة الأسنان - حجز موعد</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">🦷</div>
+    <div>
+      <div class="nav-title">عيادة الأسنان</div>
+      <div class="nav-subtitle">مستشفى يافا - دير البلح</div>
+    </div>
+  </div>
+  <div class="nav-user">
+    <button class="btn-user" id="currentUserName">محمد السيد</button>
+    <button class="btn-logout" onclick="window.location.href='../Login/index.html'">خروج</button>
+
+<!-- MAIN -->
+<main>
+  <div class="page-header">
+    <h1>حجز موعد</h1>
+    <p>اختر اليوم والوقت المناسب لك</p>
+  </div>
+
+  <div class="layout">
+
+    <!-- LEFT: Confirm Sidebar -->
+    <div>
+      <div class="card">
+        <div class="card-title">
+          <span>تأكيد الحجز</span>
+          <button class="edit-btn" title="تعديل">✏️</button>
+        </div>
+
+        <div class="confirm-row">
+          <span class="confirm-label">اليوم</span>
+          <span class="confirm-value dash" id="selectedDay">—</span>
+        </div>
+        <div class="confirm-row">
+          <span class="confirm-label">الوقت</span>
+          <span class="confirm-value dash" id="selectedTime">—</span>
+        </div>
+        <div class="confirm-row">
+          <span class="confirm-label">الطبيب</span>
+          <span class="confirm-value">د. أحمد نصار</span>
+        </div>
+        <div class="confirm-row">
+          <span class="confirm-label">المدة</span>
+          <span class="confirm-value">30 دقيقة</span>
+        </div>
+
+        <div style="margin-top:14px;">
+          <div class="confirm-label" style="font-size:14px;font-weight:700;color:var(--text-dark);margin-bottom:6px;">نوع الخدمة</div>
+          <select class="service-select">
+            <option value="">اختر الخدمة</option>
+            <option>فحص دوري</option>
+            <option>تنظيف أسنان</option>
+            <option>حشوة</option>
+            <option>خلع سن</option>
+            <option>تركيب تقويم</option>
+            <option>علاج عصب</option>
+          </select>
+        </div>
+
+        <label class="notes-label">ملاحظات (اختياري)</label>
+        <textarea placeholder="أي تفاصيل تريد إبلاغ الطبيب بها..."></textarea>
+
+        <button class="btn-confirm" onclick="confirmBooking()">✔ تأكيد الحجز</button>
+
+        <div class="clinic-info">
+          <div class="clinic-info-row"><span class="ci-icon">📍</span><span>دير البلح - حي البشارة</span></div>
+          <div class="clinic-info-row"><span class="ci-icon">📞</span><span>08-253-0950</span></div>
+          <div class="clinic-info-row"><span class="ci-icon">🕐</span><span>السبت–الخميس: 8:30ص – 4م</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right-col">
+
+      <!-- SCHEDULE CARD -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">📅</span>
+          <span>جدول دوام الدكتور</span>
+        </div>
+
+        <div class="week-nav">
+          <button class="week-btn" onclick="changeWeek(-1)">›</button>
+          <span class="week-label" id="weekLabel">19 أبريل – 25 أبريل</span>
+          <button class="week-btn" onclick="changeWeek(1)">‹</button>
+        </div>
+
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot dot-available"></div><span>متاح</span></div>
+          <div class="legend-item"><div class="legend-dot dot-booked"></div><span>محجوز</span></div>
+          <div class="legend-item"><div class="legend-dot dot-off"></div><span>إجازة</span></div>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="schedule-table">
+            <thead>
+              <tr>
+                <th><span class="day-name">الأحد</span><span class="day-date">19/4</span></th>
+                <th><span class="day-name">الاثنين</span><span class="day-date">20/4</span></th>
+                <th><span class="day-name">الثلاثاء</span><span class="day-date">21/4</span></th>
+                <th><span class="day-name">الأربعاء</span><span class="day-date">22/4</span></th>
+                <th><span class="day-name">الخميس</span><span class="day-date">23/4</span></th>
+                <th style="background:#8db99e;"><span class="day-name">الجمعة</span><span class="day-date">24/4</span></th>
+                <th><span class="day-name">السبت</span><span class="day-date">25/4</span></th>
+              </tr>
+            </thead>
+            <tbody id="scheduleBody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MY APPOINTMENTS -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">📋</span>
+          <span>مواعيدي</span>
+        </div>
+
+        <div id="myAppointmentsList" class="appointments-list">
+          <div class="empty">لا توجد مواعيد بعد</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ تم تأكيد الحجز بنجاح!</div>
+
+<script>
+  // Schedule data
+  const schedule = {
+    0: ['09:00','09:30','10:00','10:30','11:00','14:00','14:30'], // Sunday
+    1: ['09:00','09:30','10:00','10:30','14:00','14:30'],         // Monday
+    2: ['09:00','09:30','10:00','10:30','14:00','14:30'],         // Tuesday
+    3: ['09:00','09:30','10:00','10:30','11:00','14:00','14:30'], // Wednesday
+    4: ['09:00','09:30','10:00','14:00','14:30'],                 // Thursday
+    5: null,                                                       // Friday (off)
+    6: ['10:00','10:30','11:00'],                                  // Saturday
+  };
+
+  const dayNames = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const monthNames = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  let selectedSlot = null;
+  let currentWeekOffset = 0;
+
+  function getWeekDates(offset) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const weekStart = new Date(today);
+    weekStart.setDate(today.getDate() - today.getDay() + offset * 7);
+
+    const days = [];
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(weekStart);
+      d.setDate(weekStart.getDate() + i);
+      days.push(d);
+    }
+    return days;
+  }
+
+  function getConfirmedSlotKeys() {
+    return new Set(loadAppointments()
+      .filter(a => a.status === 'confirmed')
+      .map(a => `${a.date}-${a.time}`));
+  }
+
+  function renderSchedule() {
+    const days = getWeekDates(currentWeekOffset);
+    const confirmedSlots = getConfirmedSlotKeys();
+    const tbody = document.getElementById('scheduleBody');
+
+    // Find max slots
+    let maxSlots = 0;
+    for (let i = 0; i < 7; i++) {
+      const slots = schedule[i];
+      if (slots && slots.length > maxSlots) maxSlots = slots.length;
+    }
+
+    // Update headers
+    const ths = document.querySelectorAll('.schedule-table thead th');
+    ths.forEach((th, i) => {
+      const d = days[i];
+      const dateStr = `${d.getDate()}/${d.getMonth()+1}`;
+      th.innerHTML = `<span class="day-name">${dayNames[i]}</span><span class="day-date">${dateStr}</span>`;
+    });
+
+    // Update week label
+    const first = days[0], last = days[6];
+    const firstMonth = monthNames[first.getMonth()];
+    const lastMonth = monthNames[last.getMonth()];
+    document.getElementById('weekLabel').textContent =
+      `${first.getDate()} ${firstMonth} – ${last.getDate()} ${lastMonth}`;
+
+    // Build rows
+    tbody.innerHTML = '';
+    for (let row = 0; row < maxSlots; row++) {
+      const tr = document.createElement('tr');
+      for (let col = 0; col < 7; col++) {
+          const td = document.createElement('td');
+        const slots = schedule[col];
+        if (!slots) {
+          if (row === 0) {
+            td.setAttribute('rowspan', maxSlots);
+            td.innerHTML = `<span class="slot off">إجازة</span>`;
+          } else {
+            continue;
+          }
+        } else if (slots[row]) {
+          const time = slots[row];
+          const day = days[col];
+          const dateStr = `${day.getDate()}/${day.getMonth()+1}`;
+          const slotKey = `${dateStr}-${time}`;
+          const id = `${col}-${time}`;
+
+          if (confirmedSlots.has(slotKey)) {
+            td.innerHTML = `<span class="slot booked">محجوز</span>`;
+          } else {
+            td.innerHTML = `<span class="slot available" id="${id}" onclick="selectSlot('${id}','${dayNames[col]} ${dateStr}','${time}')">${time}</span>`;
+          }
+        } else {
+          td.innerHTML = '';
+        }
+        tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+    }
+  }
+
+  function selectSlot(id, day, time) {
+    if (selectedSlot) {
+      const prev = document.getElementById(selectedSlot);
+      if (prev) prev.classList.remove('selected');
+    }
+    selectedSlot = id;
+    const el = document.getElementById(id);
+    if (el) el.classList.add('selected');
+
+    document.getElementById('selectedDay').textContent = day;
+    document.getElementById('selectedDay').classList.remove('dash');
+    document.getElementById('selectedTime').textContent = time;
+    document.getElementById('selectedTime').classList.remove('dash');
+  }
+
+  function changeWeek(dir) {
+    currentWeekOffset += dir;
+    selectedSlot = null;
+    document.getElementById('selectedDay').textContent = '—';
+    document.getElementById('selectedDay').className = 'confirm-value dash';
+    document.getElementById('selectedTime').textContent = '—';
+    document.getElementById('selectedTime').className = 'confirm-value dash';
+    renderSchedule();
+  }
+
+  const queryParams = new URLSearchParams(window.location.search);
+  const guestName = queryParams.get('guest') || 'ضيف';
+  const currentUserName = document.getElementById('currentUserName');
+  if (currentUserName) currentUserName.textContent = guestName;
+
+  const APPOINTMENTS_KEY = 'yaffa_appointments';
+
+  function loadAppointments() {
+    try {
+      return JSON.parse(localStorage.getItem(APPOINTMENTS_KEY)) || [];
+    } catch {
+      return [];
+    }
+  }
+
+  function saveAppointments(list) {
+    localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(list));
+  }
+
+  function getMyAppointments() {
+    return loadAppointments().filter(a => a.patientName === guestName);
+  }
+
+  function renderMyAppointments() {
+    const container = document.getElementById('myAppointmentsList');
+    if (!container) return;
+    const appointments = getMyAppointments();
+    if (!appointments.length) {
+      container.innerHTML = '<div class="empty">لا توجد مواعيد بعد</div>';
+      return;
+    }
+    container.innerHTML = appointments.map(appt => `
+      <div class="appointment-item">
+        <div class="appt-info">
+          <div class="appt-title">${appt.service}</div>
+          <div class="appt-meta">
+            <span>📅 ${appt.date}</span>
+            <span>🕘 ${appt.time}</span>
+          </div>
+        </div>
+        <div class="badge ${appt.status === 'pending' ? 'badge-pending' : appt.status === 'confirmed' ? 'badge-confirmed' : 'badge-cancelled'}">
+          ${appt.status === 'pending' ? '⏳ قيد الانتظار' : appt.status === 'confirmed' ? '✅ مؤكد' : '❌ ملغي'}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function createAppointment(service, day, time) {
+    const appointments = loadAppointments();
+    const dateParts = day.split(' ');
+    const appt = {
+      id: Date.now().toString(),
+      patientName: guestName,
+      service,
+      date: dateParts.slice(1).join(' '),
+      day: dateParts[0],
+      time,
+      status: 'pending',
+      createdAt: new Date().toISOString()
+    };
+    appointments.push(appt);
+    saveAppointments(appointments);
+    return appt;
+  }
+
+  function confirmBooking() {
+    if (!selectedSlot) {
+      alert('الرجاء اختيار موعد أولاً');
+      return;
+    }
+    const serviceSelect = document.querySelector('.service-select');
+    const service = serviceSelect ? serviceSelect.value : '';
+    if (!service) {
+      alert('الرجاء اختيار نوع الخدمة قبل تأكيد الحجز.');
+      if (serviceSelect) serviceSelect.focus();
+      return;
+    }
+
+    createAppointment(service, document.getElementById('selectedDay').textContent, document.getElementById('selectedTime').textContent);
+    renderMyAppointments();
+
+    const toast = document.getElementById('toast');
+    toast.textContent = '✅ تم ارسال طلب الحجز إلى الإدارة للموافقة';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  // Init
+  renderSchedule();
+  renderMyAppointments();
+</script>
+</body>
+</html>

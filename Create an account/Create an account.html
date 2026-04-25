@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>انشاء حساب</title>
+    <link rel="stylesheet" href="Create an account.css">
+</head>
+<body>
+    <div class="animated-bg"></div>
+    <div class="login-page">
+        <div class="login-card">
+            <div class="brand">
+                <h1>انشاء حساب جديد</h1>
+                <p>سجل دخولك الآن إلى النظام بسهولة</p>
+            </div>
+            <form class="login-form">
+                <label for="fullname">الاسم الكامل</label>
+                <input id="fullname" type="text" placeholder="اكتب اسمك الكامل" required>
+
+                <label for="phone">رقم الجوال</label>
+                <input id="phone" type="tel" placeholder="ادخل رقم جوالك" required>
+
+                <label for="password">كلمة المرور</label>
+                <input id="password" type="password" placeholder="اختر كلمة مرور" required>
+
+                <label for="confirm">تأكيد كلمة المرور</label>
+                <input id="confirm" type="password" placeholder="اعد كتابة كلمة المرور" required>
+
+                <button type="submit">انشاء حساب</button>
+                <p class="helper">لديك حساب؟ <a href="../Login/index.html">تسجيل دخول</a></p>
+            </form>
+        </div>
+    </div>
+    <script>
+      const PATIENTS_KEY = 'yaffa_patients';
+      const signupForm = document.querySelector('.login-form');
+      const fullnameInput = document.getElementById('fullname');
+      const phoneInput = document.getElementById('phone');
+      const passwordInput = document.getElementById('password');
+      const confirmInput = document.getElementById('confirm');
+
+      function loadPatients() {
+        try {
+          return JSON.parse(localStorage.getItem(PATIENTS_KEY)) || [];
+        } catch {
+          return [];
+        }
+      }
+
+      function savePatients(patients) {
+        localStorage.setItem(PATIENTS_KEY, JSON.stringify(patients));
+      }
+
+      signupForm.addEventListener('submit', event => {
+        event.preventDefault();
+
+        const fullname = fullnameInput.value.trim();
+        const phone = phoneInput.value.trim();
+        const password = passwordInput.value;
+        const confirm = confirmInput.value;
+
+        if (!fullname || !phone || !password || !confirm) {
+          alert('يرجى تعبئة جميع الحقول.');
+          return;
+        }
+
+        if (password !== confirm) {
+          alert('كلمة المرور وتأكيدها غير متطابقين.');
+          confirmInput.focus();
+          return;
+        }
+
+        const patients = loadPatients();
+        const exists = patients.some(p => p.phone === phone);
+        if (exists) {
+          alert('رقم الجوال مسجل بالفعل.');
+          phoneInput.focus();
+          return;
+        }
+
+        patients.push({
+          id: Date.now().toString(),
+          name: fullname,
+          phone,
+          password,
+          createdAt: new Date().toISOString()
+        });
+
+        savePatients(patients);
+        alert('تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول.');
+        window.location.href = '../Login/index.html';
+      });
+    </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم الإدارة</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="admin-shell">
+        <header class="admin-header">
+            <div>
+                <p class="subtitle">مرحباً بك في لوحة الإدارة</p>
+                <h1>صفحة الأدمن</h1>
+            </div>
+            <div class="header-actions">
+                <a class="btn-secondary" href="../Patient page/Patient page.html">صفحة المريض</a>
+                <a class="btn-primary" href="../Login/index.html">تسجيل خروج</a>
+            </div>
+        </header>
+
+        <section class="stats-grid">
+            <article class="stat-card">
+                <h3>عدد المرضى</h3>
+                <p id="patientsCount">128</p>
+            </article>
+            <article class="stat-card">
+                <h3>حجوزات اليوم</h3>
+                <p id="todayBookingsCount">24</p>
+            </article>
+            <article class="stat-card">
+                <h3>الطواقم النشطة</h3>
+                <p id="activeStaffCount">8</p>
+            </article>
+            <article class="stat-card">
+                <h3>طلبات جديدة</h3>
+                <p id="pendingRequestsCount">5</p>
+            </article>
+        </section>
+
+        <section class="admin-grid">
+            <div class="card">
+                <div class="card-title">طلبات الحجز قيد الموافقة</div>
+                <div id="pendingRequestsList" class="requests-list">
+                    <div class="empty">لا توجد طلبات جديدة</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">إدارة المرضى</div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>رقم المريض</th>
+                            <th>العمر</th>
+                            <th>آخر زيارة</th>
+                            <th>الحالة</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>محمد أحمد</td>
+                            <td>123456</td>
+                            <td>34</td>
+                            <td>قبل 3 أيام</td>
+                            <td>نشط</td>
+                        </tr>
+                        <tr>
+                            <td>سمية علي</td>
+                            <td>123457</td>
+                            <td>28</td>
+                            <td>أمس</td>
+                            <td>تحت العلاج</td>
+                        </tr>
+                        <tr>
+                            <td>سالم حسين</td>
+                            <td>123458</td>
+                            <td>42</td>
+                            <td>أمس</td>
+                            <td>راجع</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <div class="card-title">إدارة الحجوزات</div>
+                <div class="info-grid">
+                    <div>
+                        <p class="info-label">مواعيد مؤكدة</p>
+                        <p id="confirmedCount" class="info-value">16</p>
+                    </div>
+                    <div>
+                        <p class="info-label">طلبات قيد الانتظار</p>
+                        <p id="pendingCount" class="info-value">5</p>
+                    </div>
+                    <div>
+                        <p class="info-label">نسب الإلغاء</p>
+                        <p id="cancelledRate" class="info-value">8%</p>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="renderPendingRequests()">تحديث الطلبات</button>
+            </div>
+        </section>
+    </div>
+    <script src="admin.js"></script>
+</body>
+</html>
